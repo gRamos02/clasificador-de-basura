@@ -1,0 +1,9 @@
+# Archivo de configuracion de datos para YOLOv8 
+
+# data.yaml
+train: ./dataset/train/images # Ruta de las imagenes de entrenamiento
+val: ./dataset/valid/images # Ruta de las imagenes de validacion
+test: ./dataset/test/images
+
+nc: 10  # numero de clases (Battery, biological, cardboard, clothes, glass, metal, paper, plastic, shoes, trash)
+names: ['Battery', 'Biological', 'Cardboard', 'Clothes', 'Glass', 'Metal', 'Paper', 'Plastic', 'Shoes', 'Trash']

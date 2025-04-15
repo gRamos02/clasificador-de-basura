@@ -7,3 +7,6 @@
 *.pkl
 *.sav
 *.tflite
+/dataset/**/
+# ignore all folders in dataset folder
+runs
