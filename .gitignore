@@ -1,7 +1,7 @@
 *.h5
 *.ckpt
 *.pth
-*.pt
+# *.pt
 *.onnx
 *.joblib
 *.pkl
@@ -10,3 +10,4 @@
 /dataset/**/
 # ignore all folders in dataset folder
 runs
+venv/
