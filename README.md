@@ -17,7 +17,7 @@ Este proyecto implementa un sistema de clasificación de basura utilizando el mo
    cd tu_repositorio
    ```
 
-2. **Crear un Entorno Virtual**
+2. ***Crear un Entorno Virtual***
 
    Es recomendable utilizar un entorno virtual para gestionar las dependencias del proyecto.
 
