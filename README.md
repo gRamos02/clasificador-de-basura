@@ -39,7 +39,7 @@ Este proyecto implementa un sistema de clasificación de basura utilizando el mo
      source env/bin/activate
      ```
 
-3. **Instalar Dependencias**
+3. **Instalación de Dependencias**
 
    Instala las dependencias necesarias utilizando `pip`:
 
