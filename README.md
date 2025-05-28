@@ -19,7 +19,7 @@ Este proyecto implementa un sistema de clasificación de basura utilizando el mo
 
 2. ***Crear un Entorno Virtual***
 
-   Es recomendable utilizar un entorno virtual para gestionar las dependencias del proyecto.
+   Es aconsejable usar un entorno virtual para administrar las librerías y paquetes necesarios del proyecto.
 
    ```bash
    python -m venv env
