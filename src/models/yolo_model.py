@@ -14,7 +14,7 @@ class BasuraDetector:
         elif TRAINED_MODEL_PATH.exists():
             return YOLO(TRAINED_MODEL_PATH)
         else:
-            return YOLO("yolov8n.pt")
+            return YOLO("yolov8m.pt")
 
     def train(self):
         return self.model.train(

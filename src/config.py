@@ -14,7 +14,7 @@ DEFAULT_MODEL = "yolov8n.pt"
 
 # Configuración de entrenamiento
 TRAIN_CONFIG = {
-    "epochs": 50,
-    "batch": 16,
+    "epochs": 100,
+    "batch": 32,
     "imgsz": 640,
 }
