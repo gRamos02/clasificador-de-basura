@@ -49,24 +49,9 @@ Este proyecto implementa un sistema de clasificación de basura utilizando el mo
 
 ## Descarga del Dataset
 
-[Dataset del proyecto](https://universe.roboflow.com/inteligencia-artificial-1hdn3/clasificacion-de-basura-wxd8k-s02r5)
+[Dataset del proyecto](https://universe.roboflow.com/ia-wx3de/clasificacion-de-basura-wxd8k)
 
 Y coloca las carpetas test, train y valid dentro de ./dataset/
-
-## Estructura del Proyecto
-
-```bash
-├── dataset/
-│   ├── test/
-│   └── train/
-│   └── valid/
-│   └── data.yaml
-├── tests/
-│   └── imagenes_de_prueba.jpg
-├── main.py
-├── requirements.txt
-└── README.md
-```
 
 - `dataset/`: Contiene las imágenes y etiquetas utilizadas para el entrenamiento.
 - `tests/`: Carpeta donde puedes colocar imágenes externas para probar el modelo.
@@ -78,10 +63,10 @@ Y coloca las carpetas test, train y valid dentro de ./dataset/
 
 1. **Entrenamiento del Modelo**
 
-   Para entrenar el modelo, ejecuta:
+   Para iniciar el proyecto, ejecuta:
 
    ```bash
-   python main.py
+   streamlit run main.py
    ```
 
    El script verificará si existe un modelo previamente entrenado. Si no lo encuentra, iniciará el proceso de entrenamiento utilizando el dataset proporcionado.
