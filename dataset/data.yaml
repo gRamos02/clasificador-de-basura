@@ -1,14 +1,27 @@
-path: C:\Users\Jerry\Documents\TecLaguna_Gerardo21130599\Semestre_9\IA\proyecto\clasificador-de-basura\dataset
+# path: C:\Users\Jerry\Documents\TecLaguna_Gerardo21130599\Semestre_9\IA\proyecto\clasificador-de-basura\dataset
+path: C:\Users\Jorge\OneDrive\Escritorio\IA\clasificador-de-basura\dataset
 train: ./train/images
 val: ./valid/images
 test: ./test/images
 
-nc: 8
-names: ['battery', 'biological', 'cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
+nc: 10
+names:
+  [
+    "battery",
+    "biological",
+    "cardboard",
+    "clothes",
+    "glass",
+    "metal",
+    "paper",
+    "plastic",
+    "shoes",
+    "trash",
+  ]
 
 roboflow:
   workspace: inteligencia-artificial-1hdn3
   project: clasificacion-de-basura-wxd8k-s02r5
-  version: 1
+  version: 2
   license: CC BY 4.0
-  url: https://universe.roboflow.com/inteligencia-artificial-1hdn3/clasificacion-de-basura-wxd8k-s02r5/dataset/1
+  url: https://universe.roboflow.com/inteligencia-artificial-1hdn3/clasificacion-de-basura-wxd8k-s02r5/dataset/2

@@ -10,7 +10,7 @@ TEST_DIR = BASE_DIR / "tests"
 # Configuración del modelo
 TRAINED_MODEL_PATH = WEIGHTS_DIR / "best.pt"
 DATA_CONFIG_PATH = DATASET_DIR / "data.yaml"
-DEFAULT_MODEL = "yolov8n.pt"
+DEFAULT_MODEL = "yolov8m.pt"
 
 # Configuración de entrenamiento
 TRAIN_CONFIG = {
