@@ -7,6 +7,13 @@ from src.comm.serial_controller import SerialController
 import numpy as np
 import time
 
+# Configuración de la página - DEBE SER LO PRIMERO
+st.set_page_config(
+    page_title="Clasificador de Basura",
+    page_icon="♻️",
+    layout="wide"
+)
+
 class StreamlitApp:
     def __init__(self):
         self.detector = BasuraDetector()
@@ -15,25 +22,93 @@ class StreamlitApp:
         )
         # Intentar conectar al Arduino
         if self.serial_controller.connect():
-            st.success("Arduino conectado correctamente")
+            st.success("Sistema de recolección conectado correctamente")
         else:
-            st.error("No se pudo conectar al Arduino")
+            st.error("No se pudo conectar al Sistema de recolección")
         
     def run(self):
-        st.title("Detección de Objetos con YOLOv8")
-        st.write("Modelo cargado y listo para realizar inferencias.")
+        # Página principal
+        st.title("🤖 Sistema de Clasificación de Basura")
+        st.markdown("---")
+
+        # Descripción del proyecto
+        col1, col2 = st.columns([2, 1])
         
-        # Agregar sidebar
+        with col1:
+            st.markdown("""
+            ### Sobre el Proyecto
+            Este sistema utiliza inteligencia artificial para clasificar residuos en tiempo real,
+            ayudando a mejorar la gestión de residuos mediante:
+
+            - 🔍 Detección automática usando YOLOv8
+            - 📊 Clasificación en 4 categorías principales
+            - 🔌 Integración con Arduino para señalización visual
+            - 📷 Soporte para imágenes y detección en tiempo real
+            """)
+
+        # Estadísticas o información relevante
+        st.markdown("---")
+        col1, col2, col3, col4 = st.columns(4)
+        
+        with col1:
+            st.metric("Categorías", "4")
+        with col2:
+            st.metric("Clases", "10")
+        # with col3:
+        #     st.metric("Precisión", "89%")
+        with col4:
+            st.metric("Estado", "En línea")
+
+        # Agregar sidebar y opciones de detección
         st.sidebar.title("Opciones de Detección")
         detection_mode = st.sidebar.radio(
             "Seleccione el modo de detección",
-            ["Subir Imagen","Webcam"]
+            ["Inicio", "Subir Imagen", "Webcam"]
         )
         
         if detection_mode == "Webcam":
             self._webcam_detection()
-        else:
+        elif detection_mode == "Subir Imagen":
             self._image_detection()
+        else:
+            # Mostrar información de categorías
+            st.markdown("### Categorías de Clasificación")
+            categorias = {
+                "♻️ Reciclable": "Metal, Vidrio, Papel, Cartón, Plástico",
+                "🗑️ No Reciclable": "Basura general, Zapatos, Ropa",
+                "🔋 Batería": "Baterías y dispositivos electrónicos",
+                "🥬 Orgánico": "Residuos biológicos y alimentos"
+            }
+            
+            for cat, desc in categorias.items():
+                with st.expander(cat):
+                    st.write(desc)
+
+        # Agregar sección de créditos al final
+        st.markdown("---")
+        st.markdown("### 👥 Equipo de Desarrollo")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            - **Jorge Sepulveda Fraire**
+              - No. Control: C21130330
+            - **Sergio Daniel Chiquito Zuñiga**
+              - No. Control: 21130605
+            """)
+        
+        with col2:
+            st.markdown("""
+            - **Delma Guadalupe Castillo Jimenez**
+              - No. Control: 21130885
+            - **Gerardo Enrique Ramos Espinoza**
+              - No. Control: 21130599
+            """)
+
+        st.markdown("---")
+        st.markdown("*Proyecto desarrollado para la materia de Inteligencia Artificial - Instituto Tecnológico de La Laguna*")
+        st.markdown("### Docente: Gibran López")
     
     def _webcam_detection(self):
         run = st.button("Iniciar Webcam")
@@ -65,7 +140,7 @@ class StreamlitApp:
                 # Enviar señal al Arduino
                 try:
                     self.serial_controller.send_category(senal_arduino)
-                    st.success(f"Señal enviada al Arduino: {categoria}")
+                    st.success(f"Señal enviada al Sistema de recolección: {categoria}")
                 except Exception as e:
                     st.error(f"Error al enviar señal: {str(e)}")
     
@@ -102,7 +177,7 @@ class StreamlitApp:
                     elif (current_time - last_detection_time) >= DETECTION_THRESHOLD:
                         try:
                             self.serial_controller.send_category(senal_arduino)
-                            st.success(f"Señal enviada al Arduino: {categoria_actual}")
+                            st.success(f"Señal enviada al Sistema de recolección: {categoria_actual}")
                             # Reiniciar temporizador después de enviar
                             last_detection_time = None
                             last_detected_category = None

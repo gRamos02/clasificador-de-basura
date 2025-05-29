@@ -1,11 +1,12 @@
-
 # Clasificación de Basura con YOLOv8
 
-Este proyecto implementa un sistema de clasificación de basura utilizando el modelo YOLOv8 y técnicas de aprendizaje por transferencia. El objetivo es detectar y clasificar diferentes tipos de residuos en imágenes, facilitando su separación y reciclaje.
+Este proyecto implementa un sistema de clasificación de basura utilizando el modelo YOLOv8 y técnicas de aprendizaje por transferencia. El sistema conecta con Arduino para indicar mediante LEDs la categoría de residuo detectado.
 
 ## Requisitos Previos
 
 - Python 3.8 o superior
+- Arduino UNO o compatible
+- Webcam (opcional para detección en tiempo real)
 - Git (opcional, para clonar el repositorio)
 
 ## Configuración del Entorno
@@ -17,73 +18,108 @@ Este proyecto implementa un sistema de clasificación de basura utilizando el mo
    cd tu_repositorio
    ```
 
-2. ***Crear un Entorno Virtual***
-
-   Es aconsejable usar un entorno virtual para administrar las librerías y paquetes necesarios del proyecto.
+2. **Crear un Entorno Virtual**
 
    ```bash
    python -m venv env
    ```
 
    Para activar el entorno virtual:
-
    - En Windows:
-
      ```bash
      .\env\Scripts\activate
      ```
-
    - En macOS/Linux:
-
      ```bash
      source env/bin/activate
      ```
 
 3. **Instalación de Dependencias**
 
-   Instala las dependencias necesarias utilizando `pip`:
-
    ```bash
    pip install -r requirements.txt
+   
+   # Desinstalar versiones existentes de PyTorch
+   pip uninstall torch torchvision torchaudio
+   
+   # Instalar PyTorch según tu sistema
+   # Visita https://pytorch.org/get-started/locally/
+   # Selecciona las opciones según tu sistema:
+   # - PyTorch Build: Stable
+   # - Your OS: Windows
+   # - Package: Pip
+   # - Language: Python
+   # - Compute Platform: CUDA (si tienes GPU) o CPU
+   
+   # Por ejemplo, para Windows + CUDA 12.1:
+   pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+   
+   # O para CPU solamente:
+   pip3 install torch torchvision torchaudio
    ```
 
-## Descarga del Dataset
+## Configuración del Hardware
 
-[Dataset del proyecto](https://universe.roboflow.com/ia-wx3de/clasificacion-de-basura-wxd8k)
+1. **Conectar LEDs al Arduino**
+   - LED Orgánico: Pin 2
+   - LED Batería: Pin 3
+   - LED Reciclable: Pin 4
+   - LED No Reciclable: Pin 5
 
-Y coloca las carpetas test, train y valid dentro de ./dataset/
-
-- `dataset/`: Contiene las imágenes y etiquetas utilizadas para el entrenamiento.
-- `tests/`: Carpeta donde puedes colocar imágenes externas para probar el modelo.
-- `main.py`: Script principal que ejecuta el entrenamiento y la inferencia.
-- `requirements.txt`: Lista de dependencias del proyecto.
-- `README.md`: Este archivo con las instrucciones del proyecto.
+2. **Cargar el Código Arduino**
+   - Abrir el archivo `ino/main/main.ino` en el IDE de Arduino
+   - Cargar el código al Arduino
 
 ## Ejecución del Proyecto
 
-1. **Entrenamiento del Modelo**
+1. **Iniciar la Aplicación**
 
-   Para iniciar el proyecto, ejecuta:
+   Si tienes Make instalado:
+   ```bash
+   make run
+   ```
 
+   Si no tienes Make instalado:
    ```bash
    streamlit run main.py
    ```
 
-   El script verificará si existe un modelo previamente entrenado. Si no lo encuentra, iniciará el proceso de entrenamiento utilizando el dataset proporcionado.
+2. **Usar la Interfaz**
+   
+   ![Interfaz Principal](./assets/images/inicio.png)
+   *Interfaz principal de la aplicación mostrando los modos de detección disponibles*
 
-2. **Prueba del Modelo**
+   - Seleccionar modo de detección: "Subir Imagen" o "Webcam"
 
-   Después del entrenamiento, el modelo realizará inferencias sobre las imágenes ubicadas en la carpeta `tests/`. Los resultados se mostrarán en ventanas emergentes con las detecciones realizadas.
+   ![Modo Webcam](./assets/images/webcam.png)
+   *Detección en tiempo real usando la webcam con botones de control*
 
-## Notas Adicionales
+   - Para webcam: 
+     - Usar los botones "Iniciar Webcam" y "Detener"
+     - La detección se realiza automáticamente sobre el video en vivo
 
-- Asegúrate de que las imágenes de prueba en la carpeta `tests/` tengan formatos compatibles como `.jpg`, `.jpeg`, `.png` o `.bmp`.
-- Si deseas modificar parámetros de entrenamiento como el número de épocas, tamaño de lote o tamaño de imagen, puedes hacerlo editando la función `train_model` en `main.py`.
+   ![Modo Imagen](./assets/images/deteccion_imagen.png)
+   *Área de carga de imágenes y resultados de la detección*
 
-## Recursos
+   - Para imágenes: 
+     - Arrastrar o hacer clic para seleccionar una imagen
+     - Los resultados se muestran con cajas delimitadoras y etiquetas
+     - El LED correspondiente en el Arduino se iluminará según la categoría detectada
+
+
+## Categorías de Clasificación
+
+- **Reciclable (R)**: Metal, Vidrio, Papel, Cartón, Plástico
+- **No Reciclable (N)**: Basura general, Zapatos, Ropa
+- **Batería (B)**: Baterías y dispositivos electrónicos
+- **Orgánico (O)**: Residuos biológicos y alimentos
+
+## Dataset
+
+[Dataset del proyecto](https://universe.roboflow.com/ia-wx3de/clasificacion-de-basura-wxd8k)
+
+## Recursos y Referencias
 
 - [Documentación de YOLOv8](https://docs.ultralytics.com/)
-- [Kaggle: Garbage Classification v2](https://www.kaggle.com/datasets/sumn2u/garbage-classification-v2)
 - [Ultralytics GitHub](https://github.com/ultralytics/ultralytics)
-- [Como detectar imagenes usando YOLOv8](https://www.freecodecamp.org/news/how-to-detect-objects-in-images-using-yolov8/)
 
