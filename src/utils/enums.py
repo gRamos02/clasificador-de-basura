@@ -10,7 +10,7 @@ class TipoBasura(Enum):
         return self.name.lower().replace('_', ' ')
 
 # Mapeo de clases YOLO a categorías
-YOLO_CLASS_TO_CATEGORY = {
+CLASS_TO_CATEGORY = {
     'metal': TipoBasura.RECICLABLE,
     'glass': TipoBasura.RECICLABLE,
     'biological': TipoBasura.ORGANICO,
@@ -21,4 +21,11 @@ YOLO_CLASS_TO_CATEGORY = {
     'shoes': TipoBasura.NO_RECICLABLE,
     'clothes': TipoBasura.NO_RECICLABLE,
     'plastic': TipoBasura.RECICLABLE
+}
+
+CATEGORY_TO_SIGNAL = {
+    TipoBasura.RECICLABLE: 'R',
+    TipoBasura.NO_RECICLABLE: 'N',
+    TipoBasura.BATERIA: 'B',
+    TipoBasura.ORGANICO: 'O'
 }

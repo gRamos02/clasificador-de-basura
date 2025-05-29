@@ -25,7 +25,7 @@ const int LEDS[NUM_LEDS] = {
 };
 
 // Constantes de tiempo
-const unsigned long TIEMPO_ENCENDIDO = 3000;    // 3 segundos para visualización
+const unsigned long TIEMPO_ENCENDIDO = 5000;    // 5 segundos para visualización
 const unsigned long TIEMPO_MINIMO = 1000;       // 1 segundo mínimo
 const unsigned long TIEMPO_MAXIMO = 10000;      // 10 segundos máximo
 
@@ -46,26 +46,29 @@ void setup() {
 
 void loop() {
   unsigned long tiempoActual = millis();
-  
-  // Verificar si hay datos disponibles en el puerto serie
-  if (Serial.available() > 0) {
-    char categoria = Serial.read();
-    actualizarLEDs(categoria);
-    ledEncendido = true;
-    tiempoUltimoLED = tiempoActual;
-  }
-  
-  // Verificar si es tiempo de apagar los LEDs
   if (ledEncendido && (tiempoActual - tiempoUltimoLED >= TIEMPO_ENCENDIDO)) {
     apagarTodosLEDs();
     ledEncendido = false;
+    delay(500);
+    limpiarBufferSerial();
+    return;
+  } else if (ledEncendido) {
+    return;
   }
-  
-  // Si recibimos una nueva categoría mientras un LED está encendido
-  // reiniciamos el temporizador
-  if (Serial.available() > 0 && ledEncendido) {
-    tiempoUltimoLED = tiempoActual;
+  // Solo procesar nuevas entradas si no hay un LED encendido
+  if (Serial.available() > 0) {
+    Serial.println("Si entro");
+    char categoria = Serial.read();
+    if (categoria == 'O' || categoria == 'B' || categoria == 'R' || categoria == 'N') {
+      actualizarLEDs(categoria);
+      ledEncendido = true;
+      tiempoUltimoLED = tiempoActual;
+      limpiarBufferSerial();  // Limpia cualquier entrada adicional
+    }// else {
+    //   secuenciaError();
+    // }
   }
+
 }
 
 void actualizarLEDs(char categoria) {
@@ -88,10 +91,6 @@ void actualizarLEDs(char categoria) {
       digitalWrite(LED_NO_RECICLABLE, HIGH);
       Serial.println("Detectado: No Reciclable");
       break;
-    default:
-      // secuenciaError();
-      Serial.println("Categoría no reconocida");
-      break;
   }
 }
 
@@ -106,9 +105,9 @@ void parpadeoInicial() {
     for (int j = 0; j < NUM_LEDS; j++) {
       digitalWrite(LEDS[j], HIGH);
     }
-    delay(200);
+    delay(100);
     apagarTodosLEDs();
-    delay(200);
+    delay(100);
   }
 }
 
@@ -121,5 +120,11 @@ void secuenciaError() {
     delay(100);
     apagarTodosLEDs();
     delay(100);
+  }
+}
+
+void limpiarBufferSerial() {
+  while (Serial.available() > 0) {
+    Serial.read();
   }
 }

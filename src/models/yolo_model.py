@@ -5,7 +5,7 @@ from src.config import TRAINED_MODEL_PATH, DATA_CONFIG_PATH, TRAIN_CONFIG
 class BasuraDetector:
     def __init__(self, model_path=None):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        print(f'Using device {self.device} for training')
+        # print(f'Using device {self.device} for training')
         self.model = self._load_model(model_path)
         self.class_names = self.model.model.names
 
