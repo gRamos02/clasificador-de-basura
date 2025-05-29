@@ -111,12 +111,27 @@ class StreamlitApp:
         st.markdown("### Docente: Gibran López")
     
     def _webcam_detection(self):
+        # Obtener cámaras disponibles
+        cameras = get_available_cameras()
+        if not cameras:
+            st.error("No se detectaron cámaras disponibles")
+            return
+        
+        # Selector de cámara
+        selected_camera = st.selectbox(
+            "Seleccionar cámara",
+            options=cameras,
+            index=0
+        )
+        
+        camera_index = int(selected_camera.split()[-1])  # Obtiene el número de la cámara
+        
         run = st.button("Iniciar Webcam")
         stop = st.button("Detener")
         FRAME_WINDOW = st.image([])
         
         if run:
-            self._run_detection(FRAME_WINDOW, stop)
+            self._run_detection(FRAME_WINDOW, stop, camera_index)
     
     def _image_detection(self):
         uploaded_file = st.file_uploader("Seleccione una imagen", type=['jpg', 'jpeg', 'png'])
@@ -144,8 +159,8 @@ class StreamlitApp:
                 except Exception as e:
                     st.error(f"Error al enviar señal: {str(e)}")
     
-    def _run_detection(self, frame_window, stop):
-        cap = cv2.VideoCapture(0)
+    def _run_detection(self, frame_window, stop, camera_index=0):
+        cap = cv2.VideoCapture(camera_index)
         last_detection_time = None
         last_detected_category = None
         DETECTION_THRESHOLD = 1.0  # Tiempo en segundos para confirmar detección
@@ -193,3 +208,17 @@ class StreamlitApp:
                 
         cap.release()
         self.serial_controller.close()
+        
+
+def get_available_cameras():
+    """Obtiene una lista de cámaras disponibles"""
+    cameras = []
+    index = 0
+    while True:
+        cap = cv2.VideoCapture(index)
+        if not cap.read()[0]:
+            break
+        cameras.append(f"Cámara {index}")
+        cap.release()
+        index += 1
+    return cameras
